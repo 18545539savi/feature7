@@ -1,20 +1,42 @@
 import React, { Component } from 'react';
+import emailjs from 'emailjs-com';
 
 
 class Report extends React.Component {
   constructor(props) {
     super(props);
     this.state ={
-    Productname: 'asdasd',
+    Productname: '',
     Productissue:'',
     }
+  };
+
+  this.handleChange =this.handleChange.bind(this);
+  this.handleSubmit = this.handleSubmit.bind(this);
+
+  handleChange = (e) => {
+    this.setState({[e.target.name]: e.target.value});
   }
 
   handleSubmit(event) {
     event.preventDefault();
     console.log(this.state);
-    console.log(templateId);
-    const templateId = 'template_id';
+ 
+    const templateId = 'template_JY6FUGep';
+
+    
+    emailjs.sendForm(
+    'pantrilist_reports_gmail_com',
+    'template_JY6FUGep',
+    '.contact_form_class',
+    'user_giyl0C5yXh1U53UAd9BAN')
+      .then()
+      .catch();
+      this.setState ({
+        Productname: "",
+        Productissue: "",
+      });
+      
 
     this.sendFeedback(templateId, {message_html: this.state.feedback, from_name: this.state.name, reply_to: 'pantrilist.reports@email.js'})
     }
@@ -27,7 +49,7 @@ class Report extends React.Component {
         console.log('Email successfully sent!')
       })
       // Handle errors here however you like, or use a React error boundary
-      .catch(err => console.error('Oh well, you failed. Here some thoughts on the error that occured:', err))
+     // .catch(err => console.error('Oh well, you failed. Here some thoughts on the error that occured:', err))//
     }
 
   handleOptionChange = changeEvent => {
@@ -40,7 +62,7 @@ class Report extends React.Component {
 
   render(){
     return (
-      <form id="report-form" onSubmit={this.handleSubmit.bind(this)} method="POST">
+      <form id="report-form" className = "contact_form_class" onSubmit={this.handleSubmit.bind(this)} method="POST">
        
         <input placeholder='Product Name' 
           value={this.state.Productname} 
